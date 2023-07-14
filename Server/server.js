@@ -1,5 +1,5 @@
 const express = require("express");
-const { addUser } = require("./Handler/userHandler");
+const { addUser, loginUser } = require("./Handler/userHandler");
 const app = express();
 require("./Database/connection");
 
@@ -8,6 +8,7 @@ app.use(express.json());
 
 //user
 app.post("/register", addUser);
+app.post("/login", loginUser);
 
 const port = 8000;
 app.listen(port, function () {

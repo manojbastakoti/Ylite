@@ -92,8 +92,24 @@ const getUserById = async (req, res) => {
     console.log(error);
   }
 };
+
+const deleteUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const deleteUser = await UserModel.findByIdAndRemove(id);
+    res.json({
+      success: true,
+      message: "User deleted successfully",
+      deleteUser,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   addUser,
   loginUser,
   getUserById,
+  deleteUserById,
 };

@@ -1,3 +1,4 @@
+const { createToken } = require("../utils");
 const UserModel = require("../Models/User");
 
 const addUser = async (req, res) => {
@@ -52,16 +53,28 @@ const loginUser = async (req, res) => {
     return false;
   }
 
+  const token = createToken({
+    data: {
+      user_id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  });
+
+  user.token = token;
+  await user.save();
+
   res.json({
     success: true,
-    message: "Login successfull",
-    // data: {
-    //   token,
-    //   user_id: user._id,
-    //   name: user.name,
-    //   email: user.email,
-    //   role:user.role,
-    // },
+    message: "Login successful",
+    data: {
+      token,
+      user_id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
   });
 };
 module.exports = {

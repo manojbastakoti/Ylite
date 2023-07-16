@@ -65,6 +65,8 @@ const loginUser = async (req, res) => {
   user.token = token;
   await user.save();
 
+  res.cookie("auth", token);
+
   res.json({
     success: true,
     message: "Login successful",
@@ -77,7 +79,21 @@ const loginUser = async (req, res) => {
     },
   });
 };
+
+const getUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const userInfo = await UserModel.findById(id).select("-password");
+    res.json({
+      userInfo,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   addUser,
   loginUser,
+  getUserById,
 };

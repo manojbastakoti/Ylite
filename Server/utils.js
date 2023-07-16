@@ -7,4 +7,8 @@ module.exports = {
     });
     return token;
   },
+  verifyToken: function (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  },
 };

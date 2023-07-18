@@ -119,8 +119,35 @@ const deletePost = async (req, res) => {
   }
 };
 
+const addViews = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await PostModel.findById(id);
+    if (!post)
+      return res.json({
+        success: false,
+        message: "Post not found!",
+      });
+
+    if (!post.viewed.includes(req.socket.remoteAddress)) {
+      post.views++;
+      post.viewed.push(req.socket.remoteAddress);
+    }
+
+    await post.save();
+
+    return res.json({
+      success: true,
+      message: "+1 views",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   addPost,
   editPost,
   deletePost,
+  addViews,
 };

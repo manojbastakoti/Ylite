@@ -8,7 +8,12 @@ const {
   deleteUserById,
 } = require("./Handler/userHandler");
 const { authenticateToken } = require("./middleware/authenticate");
-const { addPost, editPost, deletePost } = require("./Handler/postHandler");
+const {
+  addPost,
+  editPost,
+  deletePost,
+  addViews,
+} = require("./Handler/postHandler");
 const fileUpload = require("express-fileupload");
 const authenticate = require("./middleware/authenticate");
 const app = express();
@@ -29,6 +34,10 @@ app.delete("/delete_user/:id", authenticateToken, deleteUserById);
 app.post("/addpost", authenticateToken, addPost);
 app.put("/editPost/:id", authenticateToken, editPost);
 app.delete("/deletePost/:id", authenticateToken, deletePost);
+
+//add-views
+app.post("/add_views/:id", addViews);
+
 const port = 8000;
 app.listen(port, function () {
   console.log("Server listening on port" + port);

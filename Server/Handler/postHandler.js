@@ -34,10 +34,9 @@ const addPost = async (req, res) => {
 const editPost = async (req, res) => {
   try {
     const id = req.params.id;
+
     const body = req.body;
-    // console.log(req.user);
-    // const blog = await BlogModel.findById(id);
-    // console.log(blog)
+
     const edit = await PostModel.findByIdAndUpdate({ _id: id }, body, {
       new: true,
     });
@@ -85,7 +84,43 @@ const editPost = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(req.user);
+    const post = await PostModel.findById(id);
+    console.log(post);
+    if (!post)
+      return res.json({
+        success: false,
+        message: "Post not found!",
+      });
+    console.log(post.creator_id);
+    console.log(req.user._id.toJSON());
+    console.log(post.creator_id !== req.user._id);
+
+    if (post.creator_id !== req.user._id.toJSON()) {
+      return res.json({
+        success: false,
+        message: "Only author can delete!",
+      });
+    }
+    fs.unlink(post.image, function (error) {
+      console.log(error);
+    });
+    const deletePost = await PostModel.findByIdAndRemove({ _id: id });
+    res.json({
+      success: true,
+      message: "Post deleted successfully",
+      deletePost,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   addPost,
   editPost,
+  deletePost,
 };

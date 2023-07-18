@@ -14,6 +14,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    creator_id: {
+      type: String,
+      required: true,
+    },
     creator: {
       type: String,
       required: true,

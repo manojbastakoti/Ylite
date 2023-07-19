@@ -87,7 +87,6 @@ const Navbar = () => {
           </button>
         </form>
         <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
 
         <div className="icons dark:text-white">
           {theme === "light" ? (

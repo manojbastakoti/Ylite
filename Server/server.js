@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const fileupload = require("express-fileupload");
+
 const {
   addUser,
   loginUser,

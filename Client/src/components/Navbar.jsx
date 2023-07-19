@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BsMoonStarsFill } from "react-icons/bs";
+import { TbSunFilled } from "react-icons/tb";
 
 const Navbar = () => {
+  const [theme, setTheme] = useState(localStorage.getItem("Theme") ?? "light");
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    localStorage.setItem("Theme", theme);
+  }, [theme]);
+
+  const themeHandler = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
   return (
     <div className="Nav max-w-screen-xl mx-auto bg-white shadow-md px-4 py-3 flex items-center justify-between rounded-md  dark:bg-[#252525] dark:border-1 dark:border-[#757677]">
       {/* <img className="h-[80px] mr-3" src="./assets/bookshelf.png"/> */}
@@ -51,7 +67,7 @@ const Navbar = () => {
           </div>
           <button
             type="submit"
-            className="p-2.5 ml-2 text-sm font-medium text-white bg-orange-600 rounded-lg border border-blue-700 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="p-2.5 ml-2 text-sm font-medium text-white bg-orange-600 rounded-lg border border-blue-700 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 "
           >
             <svg
               className="w-5 h-5"
@@ -71,17 +87,18 @@ const Navbar = () => {
           </button>
         </form>
         <Link to="/login">Login</Link>
-        {/* <div className="icons dark:text-white">
+
+        <div className="icons dark:text-white">
           {theme === "light" ? (
-            <div className="icon cursor-pointer">
-              <i className="fa-solid fa-moon"></i>
+            <div className="icon cursor-pointer" onClick={themeHandler}>
+              <BsMoonStarsFill />
             </div>
           ) : (
-            <div className="icon cursor-pointer">
-              <i className="fa-solid fa-sun"></i>
+            <div className="icon cursor-pointer" onClick={themeHandler}>
+              <TbSunFilled size={30} />
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );

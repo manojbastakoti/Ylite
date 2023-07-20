@@ -14,6 +14,7 @@ const {
   editPost,
   deletePost,
   addViews,
+  getPosts,
 } = require("./Handler/postHandler");
 const fileUpload = require("express-fileupload");
 const authenticate = require("./middleware/authenticate");
@@ -39,6 +40,7 @@ app.post("/profile_info", authenticateToken, getProfile);
 app.post("/addpost", authenticateToken, addPost);
 app.put("/editPost/:id", authenticateToken, editPost);
 app.delete("/deletePost/:id", authenticateToken, deletePost);
+app.get("/posts", getPosts);
 
 //add-views
 app.post("/add_views/:id", addViews);

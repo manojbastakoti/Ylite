@@ -1,6 +1,7 @@
 const PostModel = require("../Models/Post");
 const { imageValidation, uploadImage } = require("../utils");
 const fs = require("fs");
+const moment = require("moment/moment");
 
 const addPost = async (req, res) => {
   try {
@@ -145,9 +146,48 @@ const addViews = async (req, res) => {
   }
 };
 
+const getPosts = async (req, res) => {
+  try {
+    const limit = 2;
+    const { pageNumber } = req.params;
+    const posts = await PostModel.find()
+      .sort({ createdAt: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * limit : 0)
+      .limit(limit);
+    // console.log(posts);
+    const finalPosts = [];
+    posts.forEach((post) => {
+      finalPosts.push({
+        id: post._id,
+        title: post.title,
+        introduction: post.introduction,
+        description: post.description,
+        author_id: post.author_id,
+        author: post.author,
+        image: post.image,
+        views: post.views,
+        createdAt: post.createdAt,
+      });
+    });
+    finalPosts.forEach((post) => {
+      post.createdAt = moment(post.createdAt).fromNow();
+    });
+    console.log(finalPosts);
+
+    res.json({
+      success: true,
+      total: await PostModel.countDocuments(),
+      data: finalPosts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   addPost,
   editPost,
   deletePost,
   addViews,
+  getPosts,
 };

@@ -62,7 +62,7 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden lg:flex justify-center items-center gap-5">
-          <Link to="/create-post">Create Post</Link>
+          {profile && <Link to="/create-post">Create Post</Link>}
         </div>
       </div>
       <div className="links hidden lg:flex justify-end gap-5 items-center  dark:text-white">

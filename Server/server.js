@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
 const {
   addUser,
   loginUser,
@@ -19,6 +19,7 @@ const authenticate = require("./middleware/authenticate");
 const app = express();
 require("./Database/connection");
 
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());

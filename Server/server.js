@@ -6,6 +6,7 @@ const {
   loginUser,
   getUserById,
   deleteUserById,
+  getProfile,
 } = require("./Handler/userHandler");
 const { authenticateToken } = require("./middleware/authenticate");
 const {
@@ -30,6 +31,9 @@ app.post("/register", addUser);
 app.post("/login", loginUser);
 app.get("/userInfo/:id", authenticateToken, getUserById);
 app.delete("/delete_user/:id", authenticateToken, deleteUserById);
+
+//Profile_info
+app.post("/profile_info", authenticateToken, getProfile);
 
 //post
 app.post("/addpost", authenticateToken, addPost);

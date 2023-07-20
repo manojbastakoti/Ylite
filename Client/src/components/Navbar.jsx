@@ -1,10 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TbSunFilled } from "react-icons/tb";
+import Cookies from "js-cookie";
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
+
+const BASE_URL = "http://localhost:8000/";
 
 const Navbar = () => {
+  const { profile, setProfile } = useContext(UserContext);
   const [theme, setTheme] = useState(localStorage.getItem("Theme") ?? "light");
+  const [token, setToken] = useState(Cookies.get("auth") ?? null);
+  useEffect(() => {
+    // console.log(Cookies.get("auth"));
+    const getUser = async () => {
+      const response = await axios({
+        method: "post",
+        url: BASE_URL + "profile_info",
+        data: {
+          token: token,
+        },
+        withCredentials: true,
+      });
+      // console.log(response);
+      const data = response.data;
+      // console.log(data);
+      if (data.success) {
+        setProfile(data.data);
+      } else {
+        setProfile(null);
+      }
+    };
+    getUser();
+  }, []);
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -18,6 +47,12 @@ const Navbar = () => {
   const themeHandler = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const logOut = () => {
+    Cookies.remove("auth");
+    setProfile(null);
+  };
+
   return (
     <div className="Nav max-w-screen-xl mx-auto bg-white shadow-md px-4 py-3 flex items-center justify-between rounded-md  dark:bg-[#252525] dark:border-1 dark:border-[#757677]">
       {/* <img className="h-[80px] mr-3" src="./assets/bookshelf.png"/> */}
@@ -86,7 +121,24 @@ const Navbar = () => {
             <span className="sr-only">Search</span>
           </button>
         </form>
-        <Link to="/login">Login</Link>
+
+        {profile === "loading" && ""}
+
+        {!profile && (
+          <Link to="/login" className="hover:font-bold transition-all">
+            Login
+          </Link>
+        )}
+
+        {profile && profile !== "loading" && (
+          <Link
+            className="hover:bg-slate-300 py-2  block whitespace-no-wrap"
+            href="#"
+            onClick={() => logOut()}
+          >
+            LogOut
+          </Link>
+        )}
 
         <div className="icons dark:text-white">
           {theme === "light" ? (

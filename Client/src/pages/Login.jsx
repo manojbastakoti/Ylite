@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { UserContext } from "../context/UserContext";
+const BASE_URL = "http://localhost:8000/";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -8,16 +12,57 @@ const Login = () => {
     password: "",
   });
   const [passwordPreview, setPasswordPreview] = useState(false);
-  const [error, setError] = useState(null);
 
-  //   for (const key in input) {
-  //     if (input[key] === "") {
-  //       setError("All fields are required!");
-  //       return false;
-  //     }
-  //   }
+  const { profile, setProfile } = useContext(UserContext);
+
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+
+    for (const key in input) {
+      if (input[key] === "") {
+        setError("All fields are required!");
+        return false;
+      }
+    }
+    try {
+      const response = await axios({
+        method: "post",
+        url: BASE_URL + "login",
+        data: input,
+        withCredentials: true,
+      });
+
+      const data = response.data;
+      console.log("normal", data);
+
+      setProfile({
+        user_id: data.data.user_id,
+        name: data.data.name,
+        email: data.data.email,
+        role: data.data.role,
+        token: data.data.token,
+      });
+
+      if (data.success) {
+        toast.success(response.data.message, {
+          theme: "colored",
+        });
+      }
+
+      navigate("/");
+    } catch (error) {
+      // toast.error(error.response.data.message);
+      console.log(error);
+    }
+  };
   return (
-    <form className="pt-10 max-w-md mt-10 mx-auto rounded-md dark:bg-[#252525] ">
+    <form
+      className="pt-10 max-w-md mt-10 mx-auto rounded-md dark:bg-[#252525] "
+      onSubmit={loginUser}
+    >
       <h1 className="text-3xl font-bold mb-4 text-center text-orange-600">
         Login
       </h1>

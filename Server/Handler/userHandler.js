@@ -1,4 +1,4 @@
-const { createToken } = require("../utils");
+const { createToken, verifyToken } = require("../utils");
 const UserModel = require("../Models/User");
 
 const addUser = async (req, res) => {
@@ -80,6 +80,28 @@ const loginUser = async (req, res) => {
   });
 };
 
+const getProfile = async (req, res) => {
+  try {
+    // const id = req.user._id
+    // const profileInfo=await UserModel.findById(id).select("-password")
+    const token = req.body.token;
+    // console.log(token)
+    if (!token)
+      return res.json({
+        success: false,
+        message: "No User Found!",
+      });
+    const tokenInfo = await verifyToken(token);
+    // console.log(tokenInfo);
+    return res.json({
+      success: true,
+      data: tokenInfo.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getUserById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -110,6 +132,7 @@ const deleteUserById = async (req, res) => {
 module.exports = {
   addUser,
   loginUser,
+  getProfile,
   getUserById,
   deleteUserById,
 };

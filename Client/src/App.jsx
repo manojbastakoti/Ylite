@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Common from "./components/Common";
 import { UserContextProvider } from "./context/UserContext";
 import Home from "./pages/Home";
+import PostView from "./pages/PostView";
 
 export default function App() {
   return (
@@ -16,9 +17,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Common />}>
               <Route index element={<Home />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/post/:id" element={<PostView />} />
             </Route>
           </Routes>
         </UserContextProvider>

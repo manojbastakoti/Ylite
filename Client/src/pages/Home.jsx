@@ -64,17 +64,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="create-button max-w-screen-2xl mx-auto mt-5 mb-2 flex justify-end">
-        {profile && (
-          <Link
-            to="/create-blog"
-            className="bg-blue-500  hover:bg-blue-600 p-3 rounded-md text-lg dark:text-white"
-          >
-            Create Blog
-          </Link>
-        )}
-      </div>
-      <div className="blog-wrapper max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 mb-16">
+      <div className="blog-wrapper max-w-screen-2xl mx-auto grid md:grid-cols-4 gap-10 mb-16 mt-16">
         {posts.map((post, index) => (
           <Post {...post} key={index} />
         ))}

@@ -148,7 +148,7 @@ const addViews = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const limit = 2;
+    const limit = 10;
     const { pageNumber } = req.params;
     const posts = await PostModel.find()
       .sort({ createdAt: -1 })
@@ -162,8 +162,8 @@ const getPosts = async (req, res) => {
         title: post.title,
         introduction: post.introduction,
         description: post.description,
-        author_id: post.author_id,
-        author: post.author,
+        creator_id: post.creator_id,
+        creator: post.creator,
         image: post.image,
         views: post.views,
         createdAt: post.createdAt,

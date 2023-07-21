@@ -18,6 +18,7 @@ const {
   getPostById,
 } = require("./Handler/postHandler");
 const fileUpload = require("express-fileupload");
+const { addComment, getComments } = require("./Handler/commentHandler");
 const app = express();
 require("./Database/connection");
 
@@ -47,6 +48,10 @@ app.get("/post/:id", getPostById);
 
 //add-views
 app.post("/add_views/:id", addViews);
+
+// comments
+app.post("/comment/add", authenticateToken, addComment);
+app.get("/comment/:postId", getComments);
 
 const port = 8000;
 app.listen(port, function () {

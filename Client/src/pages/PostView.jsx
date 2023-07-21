@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import moment from "moment/moment";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import Comments from "../components/Comments";
 // import Comments from "../components/Comments";
 
 const BASE_URL = "http://localhost:8000/";
@@ -39,21 +40,21 @@ const PostView = () => {
       const data = response.data;
       console.log(data);
     };
-    // const getComments = async () => {
-    //   const response = await axios({
-    //     method: "get",
-    //     url: BASE_URL + "comment/" + param.id,
-    //     withCredentials: true,
-    //   });
-    //   const data = response.data;
-    //   console.log(data);
+    const getComments = async () => {
+      const response = await axios({
+        method: "get",
+        url: BASE_URL + "comment/" + param.id,
+        withCredentials: true,
+      });
+      const data = response.data;
+      console.log(data);
 
-    //   setComments(data.comments);
-    //   console.log(data.comments);
-    // };
+      setComments(data.comments);
+      console.log(data.comments);
+    };
     getSinglePost();
     addViews();
-    // getComments();
+    getComments();
   }, []);
 
   if (!blog) return "";
@@ -66,34 +67,34 @@ const PostView = () => {
     });
     const data = response.data;
     if (data.success) {
-      navigate("/blogs");
+      navigate("/home");
     }
   };
 
-  //   const postComment = async (e) => {
-  //     e.preventDefault();
-  //     const response = await axios({
-  //       method: "post",
-  //       url: BASE_URL + "comment/add",
-  //       data: {
-  //         blog_id: param.id,
-  //         comment: inputComment,
-  //       },
-  //       withCredentials: true,
-  //     });
-  //     const data = response.data;
-  //     // console.log(data);
+  const postComment = async (e) => {
+    e.preventDefault();
+    const response = await axios({
+      method: "post",
+      url: BASE_URL + "comment/add",
+      data: {
+        post_id: param.id,
+        comment: inputComment,
+      },
+      withCredentials: true,
+    });
+    const data = response.data;
+    // console.log(data);
 
-  //     const tempObj = {
-  //       _id: data.data.user[0],
-  //       name: profile.name,
-  //     };
+    const tempObj = {
+      _id: data.data.user[0],
+      name: profile.name,
+    };
 
-  //     data.data.user[0] = tempObj;
+    data.data.user[0] = tempObj;
 
-  //     setInputComment("");
-  //     setComments([data.data, ...comments]);
-  //   };
+    setInputComment("");
+    setComments([data.data, ...comments]);
+  };
 
   return (
     <div className="max-w-screen-2xl mx-auto mt-16">
@@ -197,7 +198,7 @@ const PostView = () => {
           <h1 className="text-3xl font-bold dark:text-white">Comments</h1>
         </div>
 
-        {/* <form className="input-box mb-4" onSubmit={postComment}>
+        <form className="input-box mb-4" onSubmit={postComment}>
           <textarea
             className="w-[100%] bg-white rounded-md shadow-md min-h-[80px] outline-none border-none py-2 px-2 text-sm dark:bg-[#252525] dark:text-white"
             placeholder="Write your comment.."
@@ -215,15 +216,15 @@ const PostView = () => {
               <i className="fa-solid fa-paper-plane text-sm ml-1"></i>
             </button>
           </div>
-        </form> */}
+        </form>
 
-        {/* {!comments
+        {!comments
           ? "Loading"
           : comments.length <= 0
           ? "Comment not found"
           : comments.map((comment, index) => (
               <Comments {...comment} key={index} />
-            ))} */}
+            ))}
       </div>
     </div>
   );

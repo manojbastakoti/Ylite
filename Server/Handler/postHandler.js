@@ -184,10 +184,34 @@ const getPosts = async (req, res) => {
   }
 };
 
+//Retrive Single post
+const getPostById = async (req, res) => {
+  try {
+    const post = await PostModel.findById(req.params.id);
+    // console.log(post);
+    if (!post) {
+      res.json({
+        success: true,
+        message: "Post not found !",
+        data: null,
+      });
+      return false;
+    }
+    res.json({
+      success: true,
+      message: "Post found !",
+      data: post,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   addPost,
   editPost,
   deletePost,
   addViews,
   getPosts,
+  getPostById,
 };

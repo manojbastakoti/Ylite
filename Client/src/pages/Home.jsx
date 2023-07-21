@@ -1,23 +1,22 @@
 import axios from "axios";
-import { useContext } from "react";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Post from "../components/Post";
 import { UserContext } from "../context/UserContext";
 
-const BASE_URL = "http://localhost:8000/blogs";
+const BASE_URL = "http://localhost:8000/posts";
 
-const yVideos = () => {
+const Home = () => {
   const [posts, setPosts] = useState(null);
   const [totalPosts, setTotalPosts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const { profile } = useContext(UserContext);
-  console.log("blog", profile);
+  console.log("post", profile);
   useEffect(() => {
-    const getBlogs = async () => {
+    const getPosts = async () => {
       const response = await axios({
         method: "get",
-        url: BASE_URL + "/" + currentPage,
+        url: BASE_URL,
         withCredentials: true,
       });
       console.log(response);
@@ -33,7 +32,7 @@ const yVideos = () => {
         setPosts([...posts, ...data.data]);
       }
     };
-    getBlogs();
+    getPosts();
   }, [currentPage]);
 
   if (!posts) {
@@ -50,15 +49,15 @@ const yVideos = () => {
         <div className="create-button max-w-screen-2xl mx-auto mt-5 mb-2 flex justify-end">
           {profile && (
             <Link
-              to="/create-blog"
+              to="/create-post"
               className="bg-blue-500  hover:bg-blue-600 p-3 rounded-md text-lg dark:text-white"
             >
-              Create Blog
+              Create Post
             </Link>
           )}
         </div>
         <div className="no-data text-2xl font-bold grid justify-center items-center min-h-[300px]">
-          <h1 className="dark:text-white">No Blogs found !</h1>
+          <h1 className="dark:text-white">No Posts found !</h1>
         </div>
       </>
     );
@@ -99,4 +98,4 @@ const yVideos = () => {
   );
 };
 
-export default yVideos;
+export default Home;

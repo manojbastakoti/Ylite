@@ -15,9 +15,9 @@ const {
   deletePost,
   addViews,
   getPosts,
+  getPostById,
 } = require("./Handler/postHandler");
 const fileUpload = require("express-fileupload");
-const authenticate = require("./middleware/authenticate");
 const app = express();
 require("./Database/connection");
 
@@ -26,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(fileUpload());
+
+app.use("/uploads", express.static("uploads"));
 
 //user
 app.post("/register", addUser);
@@ -41,6 +43,7 @@ app.post("/addpost", authenticateToken, addPost);
 app.put("/editPost/:id", authenticateToken, editPost);
 app.delete("/deletePost/:id", authenticateToken, deletePost);
 app.get("/posts", getPosts);
+app.get("/post/:id", getPostById);
 
 //add-views
 app.post("/add_views/:id", addViews);

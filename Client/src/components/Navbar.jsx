@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TbSunFilled } from "react-icons/tb";
 import Cookies from "js-cookie";
@@ -9,9 +9,12 @@ import axios from "axios";
 const BASE_URL = "http://localhost:8000/";
 
 const Navbar = () => {
+  const [text, setText] = useState("search");
+  const formRef = useRef();
   const { profile, setProfile } = useContext(UserContext);
   const [theme, setTheme] = useState(localStorage.getItem("Theme") ?? "light");
   const [token, setToken] = useState(Cookies.get("auth") ?? null);
+  const navigate = useNavigate();
   useEffect(() => {
     // console.log(Cookies.get("auth"));
     const getUser = async () => {
@@ -53,12 +56,27 @@ const Navbar = () => {
     setProfile(null);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const search = text.search;
+    console.log(search);
+    if (search?.trim()) {
+      navigate(`/search/${search}`);
+    }
+    formRef.current.reset();
+    // actions.resetForm();
+    // else {
+    //   navigate("/allbooks");
+    // }
+  };
+
   return (
     <div className="Nav max-w-screen-xl mx-auto bg-white shadow-md px-4 py-3 flex items-center justify-between rounded-md  dark:bg-[#252525] dark:border-1 dark:border-[#757677]">
       {/* <img className="h-[80px] mr-3" src="./assets/bookshelf.png"/> */}
       <div className="flex logo items-center gap-5  dark:text-white">
-        <Link to="/home">
-          <img src="./assets/ylite_logo.png" className="w-24" />
+        <Link to="/home" className="text-2xl font-semibold">
+          <img src="./ylite_logo.png" className="w-24" />
+          {/* YLite */}
         </Link>
 
         <div className="hidden lg:flex justify-center items-center gap-5">
@@ -66,7 +84,11 @@ const Navbar = () => {
         </div>
       </div>
       <div className="links hidden lg:flex justify-end gap-5 items-center  dark:text-white">
-        <form className="flex items-center">
+        <form
+          className="flex items-center"
+          onSubmit={handleSubmit}
+          ref={formRef}
+        >
           <label htmlFor="simple-search" className="sr-only">
             Search
           </label>

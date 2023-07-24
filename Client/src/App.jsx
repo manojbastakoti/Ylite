@@ -18,6 +18,7 @@ export default function App() {
             <Route path="/" element={<Common />}>
               <Route index element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/search/:keyword" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/create-post" element={<CreatePost />} />

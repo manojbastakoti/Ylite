@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Post from "../components/Post";
 import { UserContext } from "../context/UserContext";
 
@@ -11,12 +11,21 @@ const Home = () => {
   const [totalPosts, setTotalPosts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const { profile } = useContext(UserContext);
+  const { keyword } = useParams();
+
   console.log("post", profile);
+  // keyword;
+
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const keyword = searchParams.get("keyword");
+
   useEffect(() => {
-    const getPosts = async () => {
+    const getPosts = async (keyword = " ") => {
+      console.log("keyword", keyword);
       const response = await axios({
         method: "get",
-        url: BASE_URL,
+        url: `${BASE_URL}?keyword=${keyword}`,
         withCredentials: true,
       });
       console.log(response);
@@ -25,15 +34,17 @@ const Home = () => {
 
       console.log(data);
       setTotalPosts(data.total);
+      setPosts(data.data);
+      // setQuery(" ");
 
-      if (!posts) {
-        setPosts(data.data);
-      } else {
-        setPosts([...posts, ...data.data]);
-      }
+      // if (!posts) {
+      //   setPosts(data.data);
+      // } else {
+      //   setPosts([...posts, ...data.data]);
+      // }
     };
-    getPosts();
-  }, [currentPage]);
+    getPosts(keyword);
+  }, [currentPage, keyword]);
 
   if (!posts) {
     return (
@@ -59,7 +70,7 @@ const Home = () => {
           <Post {...post} key={index} />
         ))}
       </div>
-      {posts?.length >= totalPosts ? (
+      {posts?.length < totalPosts ? (
         ""
       ) : (
         <div className="see-more flex justify-center items-center pt-2 pb-3 mb-14">

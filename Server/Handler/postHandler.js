@@ -149,9 +149,17 @@ const addViews = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
+    const keyword = req.query.keyword
+      ? {
+          title: {
+            $regex: req.query.keyword,
+            $options: "i",
+          },
+        }
+      : {};
     const limit = 10;
     const { pageNumber } = req.params;
-    const posts = await PostModel.find()
+    const posts = await PostModel.find({ ...keyword })
       .sort({ createdAt: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * limit : 0)
       .limit(limit);

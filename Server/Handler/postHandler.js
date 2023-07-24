@@ -20,6 +20,7 @@ const addPost = async (req, res) => {
       creator_id: body.creator_id,
       creator: body.creator,
       image: "uploads/" + imageFileName,
+      url: body.url,
     });
     await post.save();
     res.json({

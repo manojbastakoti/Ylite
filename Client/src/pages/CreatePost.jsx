@@ -45,6 +45,7 @@ const CreatePost = () => {
     title: "",
     description: "",
     image: "",
+    url: "",
   });
   const [error, setError] = useState(null);
 
@@ -66,6 +67,7 @@ const CreatePost = () => {
     formData.append("creator_id", profile ? profile.user_id : "");
     formData.append("creator", profile ? profile.name : "");
     formData.append("image", input.image);
+    formData.append("url", input.url);
 
     try {
       const response = await axios({
@@ -117,6 +119,7 @@ const CreatePost = () => {
             description: prev.description,
             author: prev.author,
             image: prev.image,
+            url: prev.url,
           }))
         }
       />
@@ -152,6 +155,25 @@ const CreatePost = () => {
           }))
         }
       /> */}
+
+      <input
+        className="block w-[100%] outline-none py-[10px] px-[10px] rounded-md mb-3"
+        type="text"
+        name="url"
+        placeholder="URL"
+        value={input.url}
+        onChange={(e) =>
+          setInput((prev) => ({
+            title: prev.title,
+            introduction: prev.introduction,
+            description: prev.description,
+            author: prev.author,
+            image: prev.image,
+            url: e.target.value,
+          }))
+        }
+      />
+
       <input
         className=" w-[100%] outline-none py-[10px] rounded-md mb-3 bg-white"
         type="file"
@@ -164,6 +186,7 @@ const CreatePost = () => {
             description: prev.description,
             author: prev.author,
             image: e.target.files[0],
+            url: prev.url,
           }));
           const objectUrl = URL.createObjectURL(e.target.files[0]);
           setPreview(objectUrl);
@@ -188,6 +211,7 @@ const CreatePost = () => {
             description: value,
             author: prev.author,
             image: prev.image,
+            url: prev.url,
           }))
         }
       />

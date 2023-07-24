@@ -46,16 +46,6 @@ const Home = () => {
   if (posts.length <= 0)
     return (
       <>
-        <div className="create-button max-w-screen-2xl mx-auto mt-5 mb-2 flex justify-end">
-          {profile && (
-            <Link
-              to="/create-post"
-              className="bg-blue-500  hover:bg-blue-600 p-3 rounded-md text-lg dark:text-white"
-            >
-              Create Post
-            </Link>
-          )}
-        </div>
         <div className="no-data text-2xl font-bold grid justify-center items-center min-h-[300px]">
           <h1 className="dark:text-white">No Posts found !</h1>
         </div>

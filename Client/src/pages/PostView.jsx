@@ -138,9 +138,9 @@ const PostView = () => {
       </div> */}
       <div className="image mb-4 grid items-center justify-center">
         <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/tJ3yel3TQKA"
+          width="800"
+          height="500"
+          src={blog.url}
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
